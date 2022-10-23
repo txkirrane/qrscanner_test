@@ -7,6 +7,8 @@ import beep from "../assets/beep.mp3"
 export default () => {
 
     const vidRef = useRef()
+    const lastValue = useRef(undefined)
+
     const [value, setValue] = useState(undefined)
 
     const [audio] = useState(new Audio(beep))
@@ -17,19 +19,15 @@ export default () => {
         const qr = new QrScanner(
             vidRef.current,
             ({ data }) => {
-
-                if(data === value) return
-
-                audio.pause();
-                audio.currentTime = 0;
-                audio.play()
-                
-                setValue(data)
-
+                if(data !== lastValue.current){
+                    audio.play()
+                    lastValue.current = data
+                    setValue(data)
+                }
             },
             {
                 maxScansPerSecond: 60,
-                highlightCodeOutline: true
+                highlightScanRegion: true
             }
         )
 
@@ -44,7 +42,7 @@ export default () => {
     return(
         <Fragment>
             <video style={{ width: "100%", aspectRatio: "1", objectFit: "cover", maxWidth: "600px", borderRadius: "10px"}} ref={vidRef}></video>
-            <p style={{ textAlign: "center" }}>{value ?? "Scan a QR code"}</p>
+            <p style={{ textAlign: "center" }}>{value ?? "(Scan QR Code)"}</p>
         </Fragment>
     )
 
