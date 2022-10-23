@@ -7,3 +7,7 @@ html, body {
   justify-content: center;
   align-items: center;
 }
+
+body {
+  padding: 10px;
+}
