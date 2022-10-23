@@ -17,10 +17,15 @@ export default () => {
         const qr = new QrScanner(
             vidRef.current,
             ({ data }) => {
+
+                if(data === value) return
+
                 audio.pause();
                 audio.currentTime = 0;
                 audio.play()
+                
                 setValue(data)
+
             },
             {
                 maxScansPerSecond: 60,
