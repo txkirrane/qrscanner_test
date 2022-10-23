@@ -1,18 +1,26 @@
 import { Fragment, useEffect, useRef, useState } from "react"
 
 import QrScanner from "qr-scanner"
+import useSound from "use-sound"
+
+import beep from "../assets/beep.mp3"
 
 export default () => {
 
     const vidRef = useRef()
     const [value, setValue] = useState(undefined)
 
+    const [playSound] = useSound(beep)
+
     useEffect(() => {
 
         // Create a new QrScanner
         const qr = new QrScanner(
             vidRef.current,
-            ({ data }) => setValue(data),
+            ({ data }) => {
+                playSound()
+                setValue(data)
+            },
             {
                 maxScansPerSecond: 60
             }
