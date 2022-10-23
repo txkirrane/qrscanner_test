@@ -17,6 +17,8 @@ export default () => {
         const qr = new QrScanner(
             vidRef.current,
             ({ data }) => {
+                audio.pause();
+                audio.currentTime = 0;
                 audio.play()
                 setValue(data)
             },
